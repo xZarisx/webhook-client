@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import get from 'lodash.get'
 import useWebsocket from './use-websocket'
 
 const App = () => {
@@ -7,17 +8,16 @@ const App = () => {
     e.preventDefault()
     setMessage(e.target.value)
   }
-  const [messages, socket] = useWebsocket()
-  console.log('Messages: ', messages)
+  const [gameState, socket] = useWebsocket()
 
   return (<div>
     <button onClick={() => {
       socket.send(message)
     }} >button</button>
     <input type='text' onChange={onChange} value={message} />
-    <ul>
-      {messages.map((message) => <li>{message}</li>)}
-    </ul>
+    <div>
+      {JSON.stringify(get(gameState, 'players', {}), null, 2)}
+    </div>
   </div>)
 }
 
